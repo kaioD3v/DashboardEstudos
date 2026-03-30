@@ -8,7 +8,6 @@ const STORAGE_KEY = 'materias';
 // Elementos do DOM
 const formMateria = document.getElementById('form-materia');
 const inputMateria = document.getElementById('materia');
-const inputDescricao = document.getElementById('descricao');
 const listaMateriasContainer = document.getElementById('lista-materias');
 const vazioMensagem = document.getElementById('vazio-mensagem');
 
@@ -37,7 +36,6 @@ function setupFormListener() {
  */
 function adicionarMateria() {
     const nome = inputMateria.value.trim();
-    const descricao = inputDescricao.value.trim();
 
     if (!nome) {
         alert('Por favor, digite o nome da matéria!');
@@ -48,7 +46,6 @@ function adicionarMateria() {
     const materia = {
         id: Date.now(),
         nome: nome,
-        descricao: descricao,
         dataCriacao: new Date().toLocaleDateString('pt-BR')
     };
 

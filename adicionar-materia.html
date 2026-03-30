@@ -23,7 +23,7 @@
                 <i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard
             </a>
             <a href="adicionar-materia.html" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="adicionar-materia">
-                <i data-lucide="file-text" class="w-5 h-5"></i> Adicionar Materias
+                <i data-lucide="file-text" class="w-5 h-5"></i> Materias
             </a>
             <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="rotina">
                 <i data-lucide="list" class="w-5 h-5"></i> Rotina de Estudos
@@ -62,15 +62,11 @@
             <h1 class="text-2xl font-bold">Adicionar Materias</h1>
             
             <!-- Formulário -->
-            <div class="bg-white p-6 rounded-lg shadow-md max-w-lg">
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-[400px]">
                 <form id="form-materia">
                     <div class="mb-4">
                         <label for="materia" class="block text-gray-700 font-medium mb-2">Nome da Matéria</label>
                         <input type="text" id="materia" name="materia" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Ex: Matemática" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="descricao" class="block text-gray-700 font-medium mb-2">Descrição</label>
-                        <textarea id="descricao" name="descricao" rows="4" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Descreva a matéria..."></textarea>
                     </div>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Adicionar Matéria</button>
                 </form>
@@ -78,7 +74,7 @@
 
             <!-- Lista de Matérias -->
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">Matérias Adicionadas</h2>
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Matérias</h2>
                 <div id="lista-materias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- Matérias serão adicionadas aqui pelo JS -->
                 </div>
