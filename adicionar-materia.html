@@ -1,92 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Materia - DashBoard de Estudos</title>
+    <title>Adicionar Matéria - Dashboard de Estudos</title>
+
     <link rel="stylesheet" href="./styles/output.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #sidebar {
+            transition: transform 0.3s ease, width 0.3s ease;
+            transform: translateX(0);
+        }
+
+        #sidebar.closed {
+            transform: translateX(-100%);
+            width: 0;
+            overflow: hidden;
+        }
     </style>
+
 </head>
+
 <body class="bg-[#f0f2f5] flex min-h-screen">
-    <!-- Sidebar (Barra de Tarefas) -->
+
+    <!-- Sidebar -->
     <aside class="w-64 bg-[#001529] text-gray-400 flex flex-col" id="sidebar">
+
         <div class="p-6 flex items-center gap-2 text-white font-bold text-xl">
-            <i data-lucide="layers" class="text-blue-400"></i> Estudar.com
+            <i data-lucide="layers" class="text-blue-400"></i>
+            Estudar.com
         </div>
-        
-        <nav class="flex-1 mt-4 px-3 space-y-1" id="sidebar-nav">
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="dashboard">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard
+
+        <nav class="flex-1 mt-4 px-3 space-y-1">
+
+            <a href="index.html"
+                class="flex items-center gap-3 px-4 py-3 hover:text-white transition">
+
+                <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                Dashboard
+
             </a>
-            <a href="adicionar-materia.html" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="adicionar-materia">
-                <i data-lucide="file-text" class="w-5 h-5"></i> Materias
+
+            <a href="adicionar-materia.html"
+                class="flex items-center gap-3 px-4 py-3 text-white bg-blue-500/20 rounded">
+
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                Matérias
+
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="rotina">
-                <i data-lucide="list" class="w-5 h-5"></i> Rotina de Estudos
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="questoes">
-                <i data-lucide="book" class="w-5 h-5"></i> Questões
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="pendencias">
-                <i data-lucide="alert-triangle" class="w-5 h-5"></i> Pendencias
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="conta">
-                <i data-lucide="user" class="w-5 h-5"></i> Conta
-            </a>
+
         </nav>
+
     </aside>
 
+
     <main class="flex-1 flex flex-col">
-        <!-- Header (Cabeçalho) -->
+
+        <!-- Header -->
         <header class="h-16 bg-white border-b flex items-center justify-between px-6">
-            <i data-lucide="menu" class="cursor-pointer text-gray-500" id="menu-toggle"></i>
+
+            <i data-lucide="menu"
+                class="cursor-pointer text-gray-500"
+                id="menu-toggle"></i>
+
             <div class="flex items-center gap-6 text-gray-500">
+
                 <i data-lucide="search" class="w-5 h-5 cursor-pointer"></i>
+
                 <i data-lucide="help-circle" class="w-5 h-5 cursor-pointer"></i>
+
                 <div class="relative">
+
                     <i data-lucide="bell" class="w-5 h-5 cursor-pointer"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] px-1.5 rounded-full border-2 border-white">8</span>
+
+                    <span
+                        class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] px-1.5 rounded-full border-2 border-white">
+                        8
+                    </span>
+
                 </div>
+
                 <div class="flex items-center gap-2 cursor-pointer">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=0D8ABC&color=fff" class="w-8 h-8 rounded-full" alt="User">
-                    <span class="text-sm font-medium text-gray-700">João</span>
+
+                    <img src="https://ui-avatars.com/api/?name=Kaio&background=0D8ABC&color=fff"
+                        class="w-8 h-8 rounded-full">
+
+                    <span class="text-sm font-medium text-gray-700">
+                        Kaio
+                    </span>
+
                 </div>
+
             </div>
+
         </header>
 
+
         <div class="p-6 space-y-6">
-            <h1 class="text-2xl font-bold">Adicionar Materias</h1>
-            
-            <!-- Formulário -->
+
+            <h1 class="text-2xl font-bold">
+                Adicionar Matérias
+            </h1>
+
+            <!-- Form -->
             <div class="bg-white p-6 rounded-lg shadow-md max-w-[400px]">
+
                 <form id="form-materia">
+
                     <div class="mb-4">
-                        <label for="materia" class="block text-gray-700 font-medium mb-2">Nome da Matéria</label>
-                        <input type="text" id="materia" name="materia" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Ex: Matemática" required>
+
+                        <label class="block text-gray-700 font-medium mb-2">
+                            Nome da Matéria
+                        </label>
+
+                        <input type="text"
+                            id="materia"
+
+                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+
+                            placeholder="Ex: Matemática"
+
+                            required>
+
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Adicionar Matéria</button>
+
+                    <button type="submit"
+
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+
+                        Adicionar
+
+                    </button>
+
                 </form>
+
             </div>
 
-            <!-- Lista de Matérias -->
+
+            <!-- Lista -->
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">Matérias</h2>
-                <div id="lista-materias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Matérias serão adicionadas aqui pelo JS -->
+
+                <h2 class="text-xl font-bold mb-4 text-gray-800">
+                    Matérias
+                </h2>
+
+                <div id="lista-materias"
+
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
                 </div>
-                <p id="vazio-mensagem" class="text-center text-gray-500 py-8">Nenhuma matéria adicionada ainda. Adicione uma acima!</p>
+
+                <p id="vazio-mensagem"
+
+                    class="text-center text-gray-500 py-8">
+
+                    Nenhuma matéria ainda
+
+                </p>
+
             </div>
+
         </div>
+
     </main>
 
+
+    <!-- Scripts na ordem correta -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <script src="./scripts/sidebar.js"></script>
+
     <script src="./scripts/adicionar-materia.js"></script>
+
+
+    <!-- Init global -->
     <script>
-        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            lucide.createIcons();
+
+            if (typeof initSidebar === "function") {
+
+                initSidebar();
+
+            }
+
+        });
+
     </script>
+
 </body>
+
 </html>

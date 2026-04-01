@@ -4,26 +4,37 @@
  */
 
 // Elementos da sidebar
-const sidebar = document.getElementById('sidebar');
-const sidebarNav = document.getElementById('sidebar-nav');
-const menuToggle = document.getElementById('menu-toggle');
+let sidebar;
+let sidebarNav;
+let menuToggle;
 
 /**
  * Inicializa a sidebar e configura os eventos
  */
 function initSidebar() {
-    // Marca a página ativa na sidebar
+
+    // Pega elementos somente depois do DOM existir
+    sidebar = document.getElementById('sidebar');
+    sidebarNav = document.getElementById('sidebar-nav');
+    menuToggle = document.getElementById('menu-toggle');
+
+    if (!sidebar) return;
+
+    // Marca a página ativa
     highlightActivePage();
     
-    // Adiciona evento para toggle da sidebar em telas pequenas
+    // Toggle menu
     if (menuToggle) {
         menuToggle.addEventListener('click', toggleSidebar);
     }
     
-    // Adiciona responsividade ao redimensionar janela
+    // Responsividade
     window.addEventListener('resize', handleWindowResize);
+
+    // Estado inicial responsivo
+    handleWindowResize();
     
-    // Adiciona eventos de clique aos itens da sidebar
+    // Eventos nav
     setupNavLinks();
 }
 
@@ -31,157 +42,201 @@ function initSidebar() {
  * Destaca a página ativa na sidebar
  */
 function highlightActivePage() {
+
     if (!sidebarNav) return;
     
-    // Pega a página atual do arquivo HTML
     const currentPage = getCurentPageName();
     
-    // Remove destaque de todos os links
     const navLinks = sidebarNav.querySelectorAll('a');
+
     navLinks.forEach(link => {
-        link.classList.remove('text-white', 'bg-blue-600');
+
+        link.classList.remove(
+            'text-white',
+            'bg-blue-600',
+            'rounded'
+        );
+
         link.classList.add('text-gray-400');
+
     });
     
-    // Adiciona destaque ao link da página atual
     const activeLink = sidebarNav.querySelector(`a[data-page="${currentPage}"]`);
+
     if (activeLink) {
+
         activeLink.classList.remove('text-gray-400');
-        activeLink.classList.add('text-white', 'bg-blue-600', 'rounded');
+
+        activeLink.classList.add(
+            'text-white',
+            'bg-blue-600',
+            'rounded'
+        );
+
     }
 }
 
 /**
  * Obtém o nome da página atual
- * @returns {string} Nome da página (baseado no arquivo HTML)
  */
 function getCurentPageName() {
-    const currentFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+    const currentFile =
+    window.location.pathname
+    .split('/')
+    .pop()
+    .replace('.html','');
     
-    // Mapeia nomes de arquivos para dados-page
     const pageMap = {
-        'index': 'dashboard',
-        'adicionar-materia': 'adicionar-materia',
-        'rotina': 'rotina',
-        'questoes': 'questoes',
-        'pendencias': 'pendencias',
-        'conta': 'conta'
+
+        'index':'dashboard',
+        'adicionar-materia':'adicionar-materia',
+        'rotina':'rotina',
+        'questoes':'questoes',
+        'pendencias':'pendencias',
+        'conta':'conta'
+
     };
     
     return pageMap[currentFile] || currentFile;
 }
 
 /**
- * Alterna a visibilidade da sidebar em telas pequenas
+ * Toggle sidebar
  */
 function toggleSidebar() {
-    if (sidebar) {
-        sidebar.classList.toggle('hidden');
-        sidebar.classList.toggle('block');
-    }
+
+    if (!sidebar) return;
+
+    sidebar.classList.toggle('closed');
 }
 
 /**
- * Gerencia responsividade ao redimensionar a janela
+ * Responsividade
  */
 function handleWindowResize() {
-    const width = window.innerWidth;
-    
-    // Em telas pequenas, esconde a sidebar por padrão
-    if (width < 768) {
-        if (!sidebar.classList.contains('hidden')) {
-            sidebar.classList.add('hidden');
-        }
+
+    if (!sidebar) return;
+
+    if (window.innerWidth < 768) {
+
+        sidebar.classList.add('closed');
+
     } else {
-        // Em telas grandes, sempre mostra a sidebar
-        sidebar.classList.remove('hidden');
+
+        sidebar.classList.remove('closed');
+
     }
 }
 
 /**
- * Configura eventos de clique nos links de navegação
+ * Eventos nav
  */
 function setupNavLinks() {
-    const navLinks = sidebarNav?.querySelectorAll('a');
+
+    if (!sidebarNav) return;
+
+    const navLinks =
+    sidebarNav.querySelectorAll('a');
     
-    if (navLinks) {
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // Se não for link externo, destaca como ativo
-                if (!link.href.endsWith('#')) {
-                    highlightActivePage();
-                }
+    navLinks.forEach(link => {
+
+        link.addEventListener('click', () => {
+            
+            highlightActivePage();
                 
-                // Em telas pequenas, fecha a sidebar ao clicar
-                if (window.innerWidth < 768) {
-                    sidebar.classList.add('hidden');
-                }
-            });
+            if (window.innerWidth < 768) {
+
+                sidebar.classList.add('closed');
+
+            }
+
         });
-    }
+
+    });
 }
 
 /**
- * Função para acessar elementos da sidebar de outras scripts
- * @param {string} selector - Seletor CSS
- * @returns {Element|null} Elemento encontrado
+ * Helpers externos
  */
 function getSidebarElement(selector) {
+
     return sidebar?.querySelector(selector);
+
 }
 
-/**
- * Função para acessar múltiplos elementos da sidebar
- * @param {string} selector - Seletor CSS
- * @returns {NodeList} ElementoS encontrados
- */
 function getSidebarElements(selector) {
+
     return sidebar?.querySelectorAll(selector);
+
 }
 
 /**
- * Adiciona um novo item à navbar (para uso futuro)
- * @param {string} href - URL do link
- * @param {string} icon - Nome do ícone (lucide)
- * @param {string} label - Texto do link
- * @param {string} dataPage - Atributo data-page
+ * Add item nav
  */
-function addNavItem(href, icon, label, dataPage) {
-    if (!sidebarNav) return;
+function addNavItem(href,icon,label,dataPage){
+
+    if(!sidebarNav) return;
     
-    const navItem = document.createElement('a');
+    const navItem =
+    document.createElement('a');
+
     navItem.href = href;
-    navItem.className = 'flex items-center gap-3 px-4 py-3 hover:text-white transition';
-    navItem.setAttribute('data-page', dataPage);
-    navItem.innerHTML = `
-        <i data-lucide="${icon}" class="w-5 h-5"></i> ${label}
+
+    navItem.className =
+    'flex items-center gap-3 px-4 py-3 hover:text-white transition';
+
+    navItem.setAttribute(
+        'data-page',
+        dataPage
+    );
+
+    navItem.innerHTML=
+    `
+    <i data-lucide="${icon}" class="w-5 h-5"></i>
+    ${label}
     `;
     
     sidebarNav.appendChild(navItem);
     
-    // Recria os ícones do lucide
-    lucide.createIcons();
+    if(typeof lucide !== 'undefined'){
+
+        lucide.createIcons();
+
+    }
     
-    // Reaplica os eventos
     setupNavLinks();
 }
 
 /**
- * Remove um item da navbar (para uso futuro)
- * @param {string} dataPage - Atributo data-page do item a remover
+ * Remove item nav
  */
-function removeNavItem(dataPage) {
-    if (!sidebarNav) return;
+function removeNavItem(dataPage){
+
+    if(!sidebarNav) return;
     
-    const item = sidebarNav.querySelector(`a[data-page="${dataPage}"]`);
-    if (item) {
+    const item =
+    sidebarNav.querySelector(
+        `a[data-page="${dataPage}"]`
+    );
+
+    if(item){
+
         item.remove();
+
     }
 }
 
-// Inicia a sidebar quando o DOM estiver pronto
+// Init
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSidebar);
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        initSidebar
+    );
+
 } else {
+
     initSidebar();
+
 }

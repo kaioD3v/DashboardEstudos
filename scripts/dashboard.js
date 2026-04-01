@@ -31,14 +31,15 @@ let chart        = null;
 
 // ─── Elementos ────────────────────────────────────────────────────────────────
 
-const tabEls      = document.querySelectorAll("[data-tab]");
-const periodEls   = document.querySelectorAll("[data-period]");
-const chartTitle  = document.getElementById("chart-title");
-const rankTitle   = document.getElementById("rank-title");
-const rankList    = document.getElementById("rank-list");
-const chartCanvas = document.getElementById("materias-chart");
+const tabEls       = document.querySelectorAll("[data-tab]");
+const periodEls    = document.querySelectorAll("[data-period]");
+const chartTitle   = document.getElementById("chart-title");
+const rankTitle    = document.getElementById("rank-title");
+const rankList     = document.getElementById("rank-list");
+const chartWrapper = document.getElementById("chart-wrapper");
+const chartCanvas  = document.getElementById("materias-chart");
 
-// ─── Gráfico (Chart.js — barras horizontais) ──────────────────────────────────
+// ─── Gráfico (Chart.js — barras horizontais animadas) ────────────────────────
 
 function renderChart(ranking) {
   const labels = ranking.map(r => r.nome);
@@ -46,15 +47,17 @@ function renderChart(ranking) {
   const max    = Math.max(...values);
   const colors = values.map((_, i) => i < 3 ? "#3b82f6" : "#bfdbfe");
 
+  // se já existe, atualiza com animação
   if (chart) {
     chart.data.labels                      = labels;
     chart.data.datasets[0].data            = values;
     chart.data.datasets[0].backgroundColor = colors;
     chart.options.scales.x.max             = Math.ceil(max * 1.15);
-    chart.update("active");
+    chart.update();
     return;
   }
 
+  // cria o gráfico pela primeira vez
   chart = new Chart(chartCanvas, {
     type: "bar",
     data: {
@@ -62,7 +65,7 @@ function renderChart(ranking) {
       datasets: [{
         data: values,
         backgroundColor: colors,
-        borderRadius: 4,
+        borderRadius: 6,
         borderSkipped: false,
         barThickness: 18,
       }]
@@ -71,10 +74,18 @@ function renderChart(ranking) {
       indexAxis: "y",
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 500,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
-          callbacks: { label: ctx => ` ${ctx.parsed.x}` }
+          backgroundColor: "#1e293b",
+          titleColor: "#94a3b8",
+          bodyColor: "#f1f5f9",
+          padding: 10,
+          callbacks: { label: ctx => `  ${ctx.parsed.x}` }
         }
       },
       scales: {
@@ -100,16 +111,13 @@ function render() {
   const d = data[activeTab][activePeriod];
 
   chartTitle.textContent = d.titulo;
-  rankTitle.textContent  = "Ranking de " + d.titulo;
+  rankTitle.textContent  = "Ranking — " + d.titulo;
 
-  const chartWrapper = document.getElementById("chart-wrapper");
-  if (activeTab === "materias") {
-    chartWrapper.style.display = "block";
-    renderChart(d.ranking);
-  } else {
-    chartWrapper.style.display = "none";
-  }
+  // todas as abas usam o mesmo gráfico Chart.js
+  chartWrapper.style.display = "block";
+  renderChart(d.ranking);
 
+  // ranking lateral
   rankList.innerHTML = d.ranking.map((item, i) => {
     const destaque = i < 3;
     return `

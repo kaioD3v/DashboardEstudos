@@ -12,7 +12,21 @@
             font-family: 'Inter', sans-serif;
         }
     </style>
-        <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+
+    #sidebar {
+        transition: transform 0.3s ease, width 0.3s ease;
+        transform: translateX(0);
+    }
+    #sidebar.closed {
+        transform: translateX(-100%);
+        width: 0;
+        overflow: hidden;
+    }
+</style>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body class="bg-[#f0f2f5] flex min-h-screen">
@@ -29,9 +43,9 @@
             </a>
             <a href="adicionar-materia.html" class="flex items-center gap-3 px-4 py-3 hover:text-white transition"
                 data-page="adicionar-materia">
-                <i data-lucide="file-text" class="w-5 h-5"></i> Adicionar Materias
+                <i data-lucide="file-text" class="w-5 h-5"></i> Materias
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="rotina">
+            <a href="rotina.html" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="rotina">
                 <i data-lucide="list" class="w-5 h-5"></i> Rotina de Estudos
             </a>
             <a href="#" class="flex items-center gap-3 px-4 py-3 hover:text-white transition" data-page="questoes">
@@ -118,7 +132,8 @@
                 <!-- Header Baixo (Em baixo dos Conteúdos) -->
                 <div class="flex justify-between items-center border-b pb-4 mb-6">
                     <div class="flex gap-8 text-sm font-medium">
-                        <span data-tab="materias" class="text-blue-500 border-b-2 border-blue-500 pb-4 cursor-pointer">Materias</span>
+                        <span data-tab="materias"
+                            class="text-blue-500 border-b-2 border-blue-500 pb-4 cursor-pointer">Materias</span>
                         <span data-tab="horas" class="text-gray-400 pb-4 cursor-pointer">Horas de Estudo</span>
                         <span data-tab="questoes" class="text-gray-400 pb-4 cursor-pointer">Questões</span>
                     </div>
@@ -133,10 +148,16 @@
                 <div class="grid grid-cols-3 gap-10">
                     <!-- Grafico (Em baixo do Header Baixo) -->
                     <div id="chart-wrapper" class="col-span-2">
-                        <h4 id="chart-title" class="font-medium mb-4 text-gray-700">Materias Estudadas ao Longo do Ano</h4>
+                        <h4 id="chart-title" class="font-medium mb-4 text-gray-700">Materias Estudadas ao Longo do Ano
+                        </h4>
                         <div style="height: 220px;">
                             <canvas id="materias-chart"></canvas>
                         </div>
+                    </div>
+                    <!-- Conteúdo alternativo para Horas e Questões -->
+                    <div id="alt-wrapper" class="col-span-2" style="display:none;">
+                        <h4 id="alt-title" class="font-medium mb-4 text-gray-700"></h4>
+                        <div id="alt-bars" class="h-64 flex items-end gap-4 border-l border-b px-4"></div>
                     </div>
                     <!-- Div dos Rakings (Ao lado do Gráfico) -->
                     <div>
